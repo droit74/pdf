@@ -3,13 +3,11 @@
 date_default_timezone_set('UTC');
 
 // Add composer autoloader
-if (!@include_once __DIR__ . '../autoload.php') {
+if (!@include_once __DIR__ . '/../vendor/autoload.php') {
     if (!@include_once __DIR__ . '/../../../autoload.php') {
         trigger_error("Unable to load dependencies", E_USER_ERROR);
     }
 }
-
-include_once('../autoload.php');
 
 // Add test autoloader
 spl_autoload_register(function ($class) {

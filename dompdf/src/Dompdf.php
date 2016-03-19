@@ -279,8 +279,6 @@ class Dompdf
      */
     public function __construct($options = null)
     {
-        mb_internal_encoding('UTF-8');
-        
         $this->setOptions(new Options($options));
         
         $versionFile = realpath(__DIR__ . '/../VERSION');
@@ -861,7 +859,7 @@ class Dompdf
      */
     private function write_log()
     {
-        $log_output_file = $this->getOptions()->getLogOutputFile();
+        $log_output_file = $this->get_option("log_output_file");
         if (!$log_output_file || !is_writable($log_output_file)) {
             return;
         }
@@ -880,7 +878,7 @@ class Dompdf
 
         $out .= ob_get_clean();
 
-        $log_output_file = $this->getOptions()->getLogOutputFile();
+        $log_output_file = $this->get_option("log_output_file");
         file_put_contents($log_output_file, $out);
     }
 

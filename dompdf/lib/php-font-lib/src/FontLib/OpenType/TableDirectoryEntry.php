@@ -6,4 +6,13 @@
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
 
-header("Location: font_explorer.html");
+namespace FontLib\OpenType;
+
+/**
+ * Open Type Table directory entry, the same as a TrueType one.
+ *
+ * @package php-font-lib
+ */
+class TableDirectoryEntry extends \FontLib\TrueType\TableDirectoryEntry {
+
+}

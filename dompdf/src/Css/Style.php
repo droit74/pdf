@@ -268,7 +268,7 @@ class Style
             $d["elevation"] = "level";
             $d["empty_cells"] = "show";
             $d["float"] = "none";
-            $d["font_family"] = $stylesheet->get_dompdf()->getOptions()->getDefaultFont();
+            $d["font_family"] = $stylesheet->get_dompdf()->get_option("default_font");
             $d["font_size"] = "medium";
             $d["font_style"] = "normal";
             $d["font_variant"] = "normal";
@@ -458,22 +458,18 @@ class Style
     {
         static $cache = array();
 
+        if (!is_array($length)) {
+            $length = array($length);
+        }
+
         if (!isset($ref_size)) {
             $ref_size = self::$default_font_size;
         }
 
-        if (!is_array($length)) {
-            $key = $length . "/$ref_size";
-            //Early check on cache, before converting $length to array
-            if (isset($cache[$key])) {
-                return $cache[$key];
-            }
-            $length = array($length);
-        } else {
-            $key = implode("@", $length) . "/$ref_size";
-            if (isset($cache[$key])) {
-                return $cache[$key];
-            }
+        $key = implode("@", $length) . "/$ref_size";
+
+        if (isset($cache[$key])) {
+            return $cache[$key];
         }
 
         $ret = 0;
@@ -515,7 +511,7 @@ class Style
             }
 
             if (($i = mb_strpos($l, "px")) !== false) {
-                $dpi = $this->_stylesheet->get_dompdf()->getOptions()->getDpi();
+                $dpi = $this->_stylesheet->get_dompdf()->get_option("dpi");
                 $ret += (mb_substr($l, 0, $i) * 72) / $dpi;
                 continue;
             }
@@ -802,7 +798,7 @@ class Style
             return $this->_font_family;
         }
 
-        $DEBUGCSS = $this->_stylesheet->get_dompdf()->getOptions()->getDebugCss();
+        $DEBUGCSS = $this->_stylesheet->get_dompdf()->get_option("debugCss");
 
         // Select the appropriate font.  First determine the subtype, then check
         // the specified font-families for a candidate.
@@ -1549,7 +1545,7 @@ class Style
 
     protected function _image($val)
     {
-        $DEBUGCSS = $this->_stylesheet->get_dompdf()->getOptions()->getDebugCss();
+        $DEBUGCSS = $this->_stylesheet->get_dompdf()->get_option("debugCss");
         $parsed_url = "none";
 
         if (mb_strpos($val, "url") === false) {

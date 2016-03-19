@@ -190,7 +190,6 @@ class FontMetrics
             $records = $font->getData("name", "records");
             $type = $this->getType($records[2]);
             $names[mb_strtolower($records[1])][$type] = $file;
-            $font->close();
         }
 
         return $names;
@@ -236,11 +235,7 @@ class FontMetrics
             $entry[$styleString] = $cacheEntry;
             
             // Download the remote file
-            $remoteFileContent = @file_get_contents($remoteFile, null, $context);
-            if (false === $remoteFileContent) {
-                return false;
-            }
-            file_put_contents($localTempFile, $remoteFileContent);
+            file_put_contents($localTempFile, file_get_contents($remoteFile, null, $context));
             
             $font = Font::load($localTempFile);
             
@@ -251,7 +246,6 @@ class FontMetrics
             
             $font->parse();
             $font->saveAdobeFontMetrics("$cacheEntry.ufm");
-            $font->close();
             
             unlink($localTempFile);
             
