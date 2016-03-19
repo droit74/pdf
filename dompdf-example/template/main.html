@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>DocRaptor Invoice For Super Best Client</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary, time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;vertical-align:baseline}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+
+body {border-top: 40px solid #ffffff;}
+
+footer {flow: static(footer);}
+footer {position: fixed; left: 0px; bottom: 0; right: 0px; height: 35px; color: #FFFFFF; background: {color}; text-align: center; padding: 10px 70px 10px 70px; }    
+.sample-font {margin-bottom: 10px; font-family: Roboto; font-size:20px; text-align: center;}
+	  
+#td-border {border-right: 1px solid #FFFFFF;}
+footer table {text-align: center;}
+
+</style>
+</head>
+  
+<body>
+
+<script type="text/php">
+
+if ( isset($pdf) ) {
+	/*
+	* Открытие объекта для сохранения всех
+	* операций рисования
+	*/
+	$footer = $pdf->open_object();
+	// Получаем ширину страницы
+	$p_width = $pdf->get_width();
+	// Получаем высоту страницы
+    $p_height = $pdf->get_height();
+	// Устанавливаем номер страницы
+	$pdf->set_page_number({start-page});
+	$font = Font_Metrics::get_font("Roboto", "normal");
+	//$text_w = $pdf->get_text_width($PAGE_NUM, "Roboto", 14);
+	/*
+	* Сами (для примера) рассчитываем ширину текста (номера страницы)
+	* иначе есть видимо неустранимый пока баг
+	*/
+	$text_w = 8.036;
+	// Получаем высоту текста (номера страницы)
+	$text_h = $pdf->get_font_height("Roboto", 14);
+	$x = $p_width - $text_w - 15;
+	$y = $p_height - $text_h / 2 - 20;
+	// Выводим текст на страницу
+	$pdf->page_text($x, $y, "{PAGE_NUM}", $font, 14, array(255, 255, 255));	
+	// Рисуем окружность
+	$radius = min($text_w * 1.5, $text_h * 1.5);
+	$color = array(0, 0.607, 0.901);
+	$pdf->circle($x + $text_w / 2, $y + $text_h / 2, $radius, $color);
+	
+	// закрытие текущего объекта
+	$pdf->close_object();
+    /*
+	* Добавляет объект на каждую страницу
+    * также можно добавлять на четную или нечетную: "even" или "odd")
+	*/
+    $pdf->add_object($footer, "all");	
+}
+</script>
+<footer>
+   <table cellpadding="0" cellspacing="0" width="100%" border="0">
+	<tr><td width="50%" id="td-border" style="font-family: Roboto; font-weight: bold; font-size:20px; text-align: center;">{label-1}</td>
+		<td width="50%" style="font-family: Roboto; font-weight: bold; font-size:20px;">{label-2}</td>
+	</tr>
+</table>
+</footer>
+
+<div style="margin-left: 50px; margin-right: 50px;  page-break-after: always;">
+	<div class="sample-font" style="font-weight: bold;">{page-1}</div>
+</div>
+
+<div style="margin-left: 50px; margin-right: 50px;">
+	<div class="sample-font" style="font-weight: bold; font-style: italic;">{page-2}</div>
+</div>
+</body>
+</html>
